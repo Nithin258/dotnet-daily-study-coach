@@ -1,0 +1,278 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "SharpStudy syntax check",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"check"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				},
+				"env": {
+					"PATH": "${env:LOCALAPPDATA}\\Programs\\SharpStudy\\node-v24.15.0;${env:PATH}"
+				}
+			},
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "SharpStudy start updated app (port 3002)",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"server.js"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				},
+				"env": {
+					"PORT": "3002",
+					"PATH": "${env:LOCALAPPDATA}\\Programs\\SharpStudy\\node-v24.15.0;${env:PATH}"
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "SharpStudy start app",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"server.js"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				},
+				"env": {
+					"PATH": "${env:LOCALAPPDATA}\\Programs\\SharpStudy\\node-v24.15.0;${env:PATH}"
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "SharpStudy start updated app",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"server.js"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				},
+				"env": {
+					"PORT": "3001",
+					"PATH": "${env:LOCALAPPDATA}\\Programs\\SharpStudy\\node-v24.15.0;${env:PATH}"
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "SharpStudy start app (port 3003)",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"server.js"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				},
+				"env": {
+					"PORT": "3003",
+					"PATH": "${env:LOCALAPPDATA}\\Programs\\SharpStudy\\node-v24.15.0;${env:PATH}"
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": ".NET Daily Coach (Streamlit, port 8502)",
+			"type": "shell",
+			"command": "C:\\Program Files\\Python312\\python.exe",
+			"args": [
+				"-m",
+				"streamlit",
+				"run",
+				"streamlit_app.py",
+				"--server.address",
+				"localhost",
+				"--server.port",
+				"8502",
+				"--server.headless",
+				"true",
+				"--server.showEmailPrompt",
+				"false"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Validate Streamlit app unit tests",
+			"type": "shell",
+			"command": "C:/Program Files/Python312/python.exe",
+			"args": [
+				"-m",
+				"unittest",
+				"discover",
+				"-s",
+				"tests"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": ".NET Daily Coach LOCALHOST (8502)",
+			"type": "shell",
+			"command": "C:\\Users\\11523050405\\Desktop\\personalai\\.venv\\Scripts\\python.exe",
+			"args": [
+				"-m",
+				"streamlit",
+				"run",
+				"streamlit_app.py",
+				"--server.address=localhost",
+				"--server.port=8502",
+				"--server.headless=true",
+				"--server.showEmailPrompt=false"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": ".NET Daily Coach voice assistant (port 8503)",
+			"type": "shell",
+			"command": "C:\\Users\\11523050405\\Desktop\\personalai\\.venv\\Scripts\\python.exe",
+			"args": [
+				"-m",
+				"streamlit",
+				"run",
+				"streamlit_app.py",
+				"--server.address=localhost",
+				"--server.port=8503",
+				"--server.headless=true",
+				"--server.showEmailPrompt=false"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "GitHub secure sign-in",
+			"type": "shell",
+			"command": "C:\\Users\\11523050405\\AppData\\Local\\Programs\\GitHubCLI\\gh.exe",
+			"args": [
+				"auth",
+				"login",
+				"--hostname",
+				"github.com",
+				"--git-protocol",
+				"https",
+				"--web"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "GitHub secure sign-in retry",
+			"type": "shell",
+			"command": "C:\\Users\\11523050405\\AppData\\Local\\Programs\\GitHubCLI\\gh.exe",
+			"args": [
+				"auth",
+				"login",
+				"--hostname",
+				"github.com",
+				"--git-protocol",
+				"https",
+				"--web"
+			],
+			"options": {
+				"shell": {
+					"executable": "C:\\Windows\\System32\\cmd.exe",
+					"args": [
+						"/d",
+						"/c"
+					]
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check GitHub authentication status",
+			"type": "shell",
+			"command": "C:\\Users\\11523050405\\AppData\\Local\\Programs\\GitHubCLI\\gh.exe",
+			"args": [
+				"auth",
+				"status",
+				"--hostname",
+				"github.com"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
