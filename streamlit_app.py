@@ -38,36 +38,90 @@ def render_speech_button(text: str) -> None:
     safe_text = json.dumps(text, ensure_ascii=True).replace("<", "\\u003c")
     components.html(
         f"""
-        <button id="speak-answer" type="button" aria-label="Read answer aloud">
-          <span aria-hidden="true">🔊</span> Listen to answer
-        </button>
-        <span id="speak-status" role="status"></span>
+        <div class="speech-ctrl-wrap">
+          <button id="speak-answer" type="button" aria-label="Read answer aloud">
+            <span class="speak-icon">🔊</span> <span id="speak-label">Listen to answer</span>
+          </button>
+          <div class="sound-wave" id="sound-wave">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <span id="speak-status" role="status"></span>
+        </div>
         <style>
-          body {{ margin: 0; font-family: system-ui, sans-serif; }}
+          body {{ margin: 0; font-family: "DM Sans", system-ui, sans-serif; }}
+          .speech-ctrl-wrap {{ display: flex; align-items: center; gap: 8px; }}
           #speak-answer {{
-            border: 0; border-radius: 999px; padding: 9px 16px;
-            color: white; font-weight: 650; cursor: pointer;
-            background: linear-gradient(110deg, #6d4aff, #168bd2);
-            box-shadow: 0 5px 14px #6953c833;
+            border: 0; border-radius: 999px; padding: 7px 15px;
+            color: white; font-weight: 650; font-size: 13px; cursor: pointer;
+            background: linear-gradient(110deg, #6366f1, #8b5cf6, #06b6d4);
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+            display: inline-flex; align-items: center; gap: 6px;
+            transition: all 0.2s ease;
           }}
-          #speak-answer:hover {{ filter: brightness(1.08); }}
-          #speak-status {{ margin-left: 8px; color: #585875; font-size: 12px; }}
+          #speak-answer:hover {{ filter: brightness(1.1); transform: translateY(-1px); }}
+          #speak-answer.playing {{ background: linear-gradient(110deg, #f43f5e, #e11d48); }}
+          #speak-status {{ color: #64748b; font-size: 12px; font-weight: 500; }}
+          .sound-wave {{ display: none; align-items: center; gap: 3px; height: 16px; }}
+          .sound-wave.active {{ display: flex; }}
+          .sound-wave span {{
+            width: 3px; height: 6px; border-radius: 99px; background: #8b5cf6;
+            animation: bounce 0.6s infinite alternate ease-in-out;
+          }}
+          .sound-wave span:nth-child(2) {{ animation-delay: 0.15s; }}
+          .sound-wave span:nth-child(3) {{ animation-delay: 0.3s; }}
+          .sound-wave span:nth-child(4) {{ animation-delay: 0.45s; }}
+          @keyframes bounce {{ from {{ height: 5px; }} to {{ height: 18px; }} }}
         </style>
         <script>
           const answerText = {safe_text};
           const speakButton = document.getElementById("speak-answer");
+          const speakLabel = document.getElementById("speak-label");
           const speakStatus = document.getElementById("speak-status");
+          const soundWave = document.getElementById("sound-wave");
+          let isSpeaking = false;
+
           speakButton.addEventListener("click", () => {{
             if (!("speechSynthesis" in window)) {{
               speakStatus.textContent = "Speech is not supported by this browser.";
               return;
             }}
+            if (isSpeaking) {{
+              window.speechSynthesis.cancel();
+              isSpeaking = false;
+              speakButton.classList.remove("playing");
+              soundWave.classList.remove("active");
+              speakLabel.textContent = "Listen to answer";
+              speakStatus.textContent = "";
+              return;
+            }}
             window.speechSynthesis.cancel();
-            const answer = new SpeechSynthesisUtterance(answerText);
-            answer.rate = 1;
-            answer.onstart = () => speakStatus.textContent = "Speaking…";
-            answer.onend = () => speakStatus.textContent = "";
-            answer.onerror = () => speakStatus.textContent = "Could not play speech.";
+            const cleanText = answerText
+              .replace(/```[\s\S]*?```/g, "Code example provided.")
+              .replace(/[#*_~`>]/g, "")
+              .trim();
+            const answer = new SpeechSynthesisUtterance(cleanText);
+            answer.rate = 1.0;
+            answer.onstart = () => {{
+              isSpeaking = true;
+              speakButton.classList.add("playing");
+              soundWave.classList.add("active");
+              speakLabel.textContent = "Stop voice";
+              speakStatus.textContent = "Speaking…";
+            }};
+            answer.onend = () => {{
+              isSpeaking = false;
+              speakButton.classList.remove("playing");
+              soundWave.classList.remove("active");
+              speakLabel.textContent = "Listen again";
+              speakStatus.textContent = "";
+            }};
+            answer.onerror = () => {{
+              isSpeaking = false;
+              speakButton.classList.remove("playing");
+              soundWave.classList.remove("active");
+              speakLabel.textContent = "Listen to answer";
+              speakStatus.textContent = "Could not play speech.";
+            }};
             window.speechSynthesis.speak(answer);
           }});
         </script>
@@ -124,8 +178,15 @@ if "pending_tutor_prompt" not in st.session_state:
 st.markdown(
     """
     <div class="assistant-hero">
-      <h2>✨ Your AI voice assistant</h2>
-      <p>Ask anything. Type or record a question, then listen to the answer.</p>
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <h2>✨ Beautiful AI Voice Assistant & Coach</h2>
+          <p>Ask anything about C# & .NET. Type or record a question, then listen to the answer.</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 0%, #a855f7 45%, #06b6d4 100%); box-shadow: 0 0 25px rgba(255,255,255,0.7); animation: orb-pulse 3s infinite ease-in-out;"></div>
+        </div>
+      </div>
     </div>
     """,
     unsafe_allow_html=True,

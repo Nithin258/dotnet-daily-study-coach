@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#6366f1">
+    <title>SharpStudy — Beautiful AI C# & .NET Coach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="SharpStudy home">
+          <span class="brand-mark">&lt;/&gt;</span>
+          <span>sharp<span class="brand-light">study</span></span>
+        </a>
+        <div class="side-label">AI ASSISTANTS</div>
+        <button class="nav-item active" id="nav-chat" type="button">
+          <span class="nav-icon">💬</span> AI Study Chat
+        </button>
+        <button class="nav-item nav-voice-assistant" id="nav-voice" type="button">
+          <span class="nav-icon">✨</span> Voice Assistant <span class="badge-live">LIVE</span>
+        </button>
+        <a class="nav-item" href="#tasks">
+          <span class="nav-icon">◷</span> Study reminders <span class="nav-count" id="task-count">0</span>
+        </a>
+        <div class="sidebar-bottom">
+          <div class="voice-quick-card" id="voice-quick-card">
+            <div class="voice-card-icon">🎙️</div>
+            <div>
+              <strong>Voice Assistant</strong>
+              <span>Tap to start hands-free call</span>
+            </div>
+          </div>
+          <div class="streak-card">
+            <div class="streak-icon">✳</div>
+            <div><strong>Daily Momentum</strong><span>One C# concept at a time.</span></div>
+          </div>
+          <div class="profile"><div class="avatar">S</div><div><strong>My study space</strong><span>C# exam prep</span></div><span class="profile-more">···</span></div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="breadcrumb">
+            My learning <span>/</span> <strong>C# &amp; .NET Mastery</strong>
+          </div>
+          <div class="top-actions">
+            <div class="model-badge" id="model-badge" title="Active AI model">
+              <span class="model-sparkle">✦</span>
+              <span id="model-name">Gemini 3.8 Flash</span>
+            </div>
+            <span class="connection-dot" id="connection-dot"></span>
+            <span class="connection-label" id="connection-label">Checking tutor…</span>
+            <button class="voice-launch-btn" id="voice-launch-btn" type="button" title="Launch AI Voice Assistant">
+              <span class="voice-pulse-ring"></span>
+              <span class="voice-btn-mic">🎙️</span> Voice Assistant
+            </button>
+            <button class="ai-setup-button" id="ai-setup-button" type="button" hidden>Set up AI</button>
+            <button class="icon-button" id="voice-settings-btn" title="Voice & Speech Settings" aria-label="Voice settings">⚙️</button>
+            <button class="icon-button" id="notification-button" title="Enable browser notifications" aria-label="Enable browser notifications">♧</button>
+            <button class="gmail-button" id="gmail-button">Connect Gmail</button>
+          </div>
+        </header>
+
+        <div class="workspace">
+          <section class="chat-column" aria-label="C# tutor chat">
+            <!-- Persona Selector -->
+            <div class="persona-bar">
+              <span class="persona-label">Persona:</span>
+              <div class="persona-options" id="persona-options">
+                <button type="button" class="persona-pill active" data-persona="tutor">
+                  <span class="pill-dot purple"></span> 🎓 Exam Prep
+                </button>
+                <button type="button" class="persona-pill" data-persona="architect">
+                  <span class="pill-dot indigo"></span> 🏛️ .NET Architect
+                </button>
+                <button type="button" class="persona-pill" data-persona="quiz">
+                  <span class="pill-dot teal"></span> 🎯 Quiz Master
+                </button>
+                <button type="button" class="persona-pill" data-persona="debugger">
+                  <span class="pill-dot rose"></span> 🔍 Code Doctor
+                </button>
+              </div>
+            </div>
+
+            <div class="welcome" id="welcome-banner">
+              <div class="eyebrow"><span class="spark">✨</span> BEAUTIFUL AI C# &amp; .NET TUTOR</div>
+              <h1>Master C# with<br><span class="gradient-text">Beautiful AI.</span></h1>
+              <p>Ask anything, work through tricky concepts, practice exam drills, or talk directly to your AI voice assistant.</p>
+            </div>
+
+            <div class="suggestions" id="suggestions">
+              <button class="suggestion" data-prompt="Explain the difference between a class and an object in C# with a clear example.">
+                <span class="suggestion-icon violet">◇</span><span><strong>Explain a concept</strong><small>Class vs. object, in plain English</small></span><span class="suggestion-arrow">↗</span>
+              </button>
+              <button class="suggestion" data-prompt="Give me a short interactive C# exam quiz on async/await and Tasks.">
+                <span class="suggestion-icon peach">✎</span><span><strong>Quiz me</strong><small>Async, await &amp; Tasks challenge</small></span><span class="suggestion-arrow">↗</span>
+              </button>
+              <button class="suggestion" data-prompt="Review this C# code and suggest best practices for LINQ performance and memory efficiency: ">
+                <span class="suggestion-icon mint">&lt;/&gt;</span><span><strong>Review some code</strong><small>LINQ &amp; memory optimization</small></span><span class="suggestion-arrow">↗</span>
+              </button>
+              <button class="suggestion" data-prompt="Create a 20-minute daily C# study roadmap for today focusing on interfaces and dependency injection.">
+                <span class="suggestion-icon yellow">◷</span><span><strong>Plan a study session</strong><small>DI &amp; interfaces 20-min plan</small></span><span class="suggestion-arrow">↗</span>
+              </button>
+            </div>
+
+            <div class="chat-header-actions" id="chat-header-actions" hidden>
+              <span class="chat-persona-indicator" id="chat-persona-indicator">🎓 C# Exam Prep Mode</span>
+              <button type="button" class="clear-chat-btn" id="clear-chat-btn" title="Start new conversation">
+                🗑️ Clear chat
+              </button>
+            </div>
+
+            <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+
+            <!-- Live Speech-to-Text Banner -->
+            <div class="speech-banner" id="speech-banner" hidden>
+              <div class="speech-pulse"></div>
+              <span class="speech-text" id="speech-text">Listening to your voice…</span>
+              <button type="button" class="speech-cancel" id="speech-cancel" title="Cancel listening">✕</button>
+            </div>
+
+            <form class="composer" id="chat-form">
+              <textarea id="chat-input" rows="1" placeholder="Ask your C# tutor anything, or click 🎙️ to speak…" aria-label="Message your C# tutor"></textarea>
+              <div class="composer-footer">
+                <div class="composer-left-tools">
+                  <button type="button" class="mic-button" id="mic-button" title="Speak your question (Voice Input)" aria-label="Voice input">
+                    <span class="mic-icon">🎙️</span>
+                    <span class="mic-wave"></span>
+                  </button>
+                  <button type="button" class="voice-assistant-trigger" id="voice-assistant-trigger" title="Open AI Voice Assistant">
+                    <span class="sparkle-tiny">✨</span> Voice Mode
+                  </button>
+                  <span class="composer-spark-label"><span class="composer-spark">✳</span> AI Powered</span>
+                </div>
+                <div class="composer-right-tools">
+                  <button type="submit" id="send-button" aria-label="Send message" title="Send message">↑</button>
+                </div>
+              </div>
+            </form>
+            <div class="disclaimer">SharpStudy uses AI and can make mistakes. Verify important concepts for exams and production code.</div>
+          </section>
+
+          <aside class="tasks-panel" id="tasks">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">KEEP YOUR MOMENTUM</div>
+                <h2>Study reminders</h2>
+              </div>
+              <button id="add-task-button" class="add-button" aria-label="Add study task">+</button>
+            </div>
+            <p class="panel-description">A little structure goes a long way. Set a reminder for your next study session.</p>
+            <div class="progress-label"><span>YOUR TASKS</span><span id="progress-text">0 / 0 done</span></div>
+            <div class="progress-track"><div id="progress-bar"></div></div>
+            <div class="task-list" id="task-list"></div>
+            <div class="task-empty" id="task-empty"><span>◷</span><strong>Your next win starts here</strong><small>Add a study task and make it happen.</small><button id="empty-add-button">Add your first task <span>→</span></button></div>
+            <section class="digest-card" aria-labelledby="digest-title">
+              <div class="digest-heading"><span class="mail-icon">✉</span><div><strong id="digest-title">Daily plan email</strong><small>A morning snapshot of today’s tasks.</small></div></div>
+              <form id="digest-form">
+                <label for="digest-email">Send today’s plan to</label>
+                <input id="digest-email" type="email" maxlength="254" placeholder="you@example.com">
+                <label for="digest-time">Send every day at</label>
+                <input id="digest-time" type="time" value="08:00" required>
+                <button class="digest-save" type="submit">Save daily email</button>
+                <button class="digest-test-btn" id="digest-test-btn" type="button">Send Test Email ✉️</button>
+              </form>
+              <p class="digest-status" id="digest-status" aria-live="polite">Gmail automation ready.</p>
+            </section>
+            <div class="gmail-note"><span class="mail-icon">✉</span><span><strong>Gmail Automation Active</strong><small>Study task reminders and daily plans are delivered to your inbox.</small></span></div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <!-- Fullscreen AI Voice Assistant Overlay Modal -->
+    <div class="voice-modal" id="voice-modal" hidden>
+      <div class="voice-modal-backdrop" id="voice-modal-backdrop"></div>
+      <div class="voice-modal-window">
+        <header class="voice-modal-header">
+          <div class="voice-modal-title">
+            <span class="voice-spark">✦</span>
+            <span>SharpStudy AI Voice Assistant</span>
+            <span class="voice-status-pill" id="voice-status-pill">Ready</span>
+          </div>
+          <button type="button" class="voice-modal-close" id="voice-modal-close" aria-label="Close voice assistant">✕</button>
+        </header>
+
+        <div class="voice-modal-body">
+          <!-- Animated Holographic AI Orb -->
+          <div class="ai-orb-stage">
+            <div class="ai-orb-ambient"></div>
+            <div class="ai-orb-rings">
+              <div class="orb-ring ring-1"></div>
+              <div class="orb-ring ring-2"></div>
+              <div class="orb-ring ring-3"></div>
+            </div>
+            <div class="ai-orb" id="ai-orb">
+              <div class="ai-orb-core"></div>
+              <div class="ai-orb-glow"></div>
+              <div class="ai-orb-swirl"></div>
+            </div>
+            <!-- Audio Equalizer Waveform Bars -->
+            <div class="ai-wave-bars" id="ai-wave-bars">
+              <span class="bar bar-1"></span>
+              <span class="bar bar-2"></span>
+              <span class="bar bar-3"></span>
+              <span class="bar bar-4"></span>
+              <span class="bar bar-5"></span>
+              <span class="bar bar-6"></span>
+              <span class="bar bar-7"></span>
+            </div>
+          </div>
+
+          <!-- Transcript & Spoken Dialogue -->
+          <div class="voice-dialogue">
+            <div class="voice-user-transcript" id="voice-user-transcript">
+              <span class="transcript-label">You:</span>
+              <p id="voice-user-text">Click the microphone below and ask any C# or .NET question…</p>
+            </div>
+            <div class="voice-ai-response" id="voice-ai-response">
+              <div class="ai-avatar-tiny">✨</div>
+              <div class="voice-ai-text" id="voice-ai-text">
+                "Hello! I'm your AI voice study coach. Ask me anything about C#, .NET architecture, exam prep, or coding questions!"
+              </div>
+            </div>
+          </div>
+
+          <!-- Voice Controls -->
+          <div class="voice-modal-controls">
+            <button type="button" class="voice-orb-mic-btn" id="voice-orb-mic-btn" aria-label="Toggle speech input">
+              <span class="orb-mic-icon">🎙️</span>
+              <span class="orb-mic-label" id="orb-mic-label">Tap to Speak</span>
+            </button>
+            <label class="voice-autoloop-toggle" title="Keep listening after the AI finishes speaking for hands-free conversation">
+              <input type="checkbox" id="voice-autoloop-check" checked>
+              <span>Hands-free voice loop</span>
+            </label>
+            <div class="voice-sub-controls">
+              <button type="button" class="voice-action-pill" id="voice-stop-speech-btn" title="Stop speaking">
+                ⏹️ Stop Voice
+              </button>
+              <button type="button" class="voice-action-pill" id="voice-replay-speech-btn" title="Replay answer">
+                🔁 Replay
+              </button>
+              <button type="button" class="voice-action-pill" id="voice-settings-toggle-btn" title="Voice preferences">
+                ⚙️ Voice Settings
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Prompts in Voice Mode -->
+          <div class="voice-quick-prompts">
+            <span class="vqp-label">Quick topics:</span>
+            <button type="button" class="vqp-btn" data-vprompt="Explain C# interfaces and dependency injection">Interfaces &amp; DI</button>
+            <button type="button" class="vqp-btn" data-vprompt="Give me a quick C# quiz on value types versus reference types">Types Quiz</button>
+            <button type="button" class="vqp-btn" data-vprompt="What are the best practices for async await in ASP.NET Core?">Async Best Practices</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice Settings Dialog -->
+    <dialog id="voice-settings-dialog">
+      <form method="dialog" class="dialog-close-form"><button class="close-button" aria-label="Close">×</button></form>
+      <div class="eyebrow">VOICE PREFERENCES</div>
+      <h2>AI Voice &amp; Speech Settings</h2>
+      <div class="voice-settings-form">
+        <label for="voice-select">Speech Voice</label>
+        <select id="voice-select" class="voice-select"></select>
+
+        <label for="voice-rate">Speech Rate: <span id="rate-value">1.0x</span></label>
+        <input id="voice-rate" type="range" min="0.7" max="1.5" step="0.1" value="1.0">
+
+        <label for="voice-pitch">Pitch: <span id="pitch-value">1.0</span></label>
+        <input id="voice-pitch" type="range" min="0.7" max="1.3" step="0.1" value="1.0">
+
+        <label class="setting-checkbox">
+          <input type="checkbox" id="setting-auto-speak" checked>
+          <span>Automatically read assistant answers aloud in chat</span>
+        </label>
+        <label class="setting-checkbox">
+          <input type="checkbox" id="setting-sound-effects" checked>
+          <span>Play soft audio cues on voice events</span>
+        </label>
+        <div class="dialog-actions">
+          <button type="button" class="cancel-button" id="test-voice-btn">Test Voice 🔊</button>
+          <button type="button" class="save-button" id="save-voice-settings">Done</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Existing Dialogs -->
+    <dialog id="task-dialog">
+      <form method="dialog" class="dialog-close-form"><button class="close-button" aria-label="Close">×</button></form>
+      <div class="eyebrow">MAKE A PLAN</div><h2>What will you study?</h2>
+      <form id="task-form" class="task-form">
+        <label for="task-title">Study task</label>
+        <input id="task-title" maxlength="120" placeholder="e.g. Review C# interfaces" required>
+        <label for="task-due">Remind me at</label>
+        <input id="task-due" type="datetime-local" required>
+        <label for="task-email">Email reminder <span>(optional)</span></label>
+        <input id="task-email" type="email" placeholder="you@example.com">
+        <label class="setting-checkbox" style="margin-top: 8px; margin-bottom: 4px;">
+          <input type="checkbox" id="task-notify-immediate">
+          <span>Send instant confirmation email now</span>
+        </label>
+        <p class="dialog-help">Gmail automation will email you reminders directly at the scheduled time.</p>
+        <div class="dialog-actions"><button type="button" class="cancel-button" id="cancel-task">Cancel</button><button type="submit" class="save-button">Save reminder <span>→</span></button></div>
+      </form>
+    </dialog>
+
+    <dialog id="gmail-setup-dialog">
+      <form method="dialog" class="dialog-close-form"><button class="close-button" aria-label="Close">×</button></form>
+      <div class="eyebrow">ONE-TIME SETUP</div>
+      <h2>Connect your Gmail</h2>
+      <p class="gmail-setup-intro"><strong>Gemini API keys cannot send Gmail.</strong> The AI Studio key is only for tutor answers. Gmail alerts need a separate Google OAuth client and your approval. Keep OAuth credentials in your local <code>.env</code> file—never paste secrets into chat.</p>
+      <ol class="gmail-setup-steps">
+        <li>In <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>, create or select a project and enable the <strong>Gmail API</strong>.</li>
+        <li>Configure the OAuth consent screen. If the app is in testing mode, add your Google account as a test user.</li>
+        <li>Create an OAuth client ID for a <strong>Web application</strong>. Add this exact URL as an authorized redirect URI:</li>
+      </ol>
+      <div class="callback-copy"><code id="gmail-callback-url"></code><button type="button" id="copy-callback" class="cancel-button">Copy</button></div>
+      <ol class="gmail-setup-steps" start="4">
+        <li>Copy the client ID and secret into <code>.env</code> in the SharpStudy folder:</li>
+      </ol>
+      <pre class="env-example">GOOGLE_CLIENT_ID=your-client-id
+GOOGLE_CLIENT_SECRET=your-client-secret
+GOOGLE_REDIRECT_URI=<span id="gmail-env-callback"></span></pre>
+      <p class="dialog-help">Save <code>.env</code>, restart the SharpStudy server, then choose <strong>Connect Gmail</strong> and approve access.</p>
+      <div class="dialog-actions"><button type="button" class="cancel-button" id="close-gmail-setup">Close</button><a class="save-button gmail-console-link" href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer">Open Google credentials <span>↗</span></a></div>
+    </dialog>
+
+    <dialog id="ai-setup-dialog">
+      <form method="dialog" class="dialog-close-form"><button class="close-button" aria-label="Close">×</button></form>
+      <div class="eyebrow">GOOGLE AI STUDIO</div>
+      <h2>Connect Gemini AI</h2>
+      <p class="gmail-setup-intro">Paste your Gemini API key below to enable full online AI answers and multimodal voice features.</p>
+      
+      <form id="ai-key-form" class="task-form" style="margin-top: 14px;">
+        <label for="ai-key-input">Gemini API Key</label>
+        <input id="ai-key-input" type="password" placeholder="AIzaSy..." required autocomplete="off">
+        <p class="dialog-help" style="margin-top: 6px;">
+          Don't have a key? Get a free key in seconds at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio ↗</a>.
+        </p>
+        <div class="dialog-actions">
+          <button type="button" class="cancel-button" id="close-ai-setup">Cancel</button>
+          <button type="submit" class="save-button" id="save-ai-key-btn">Save &amp; Connect Gemini</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

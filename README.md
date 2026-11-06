@@ -1,62 +1,75 @@
 # dotnet-daily-study-coach
 
-An automated C#/.NET study coach built with Streamlit and Gemini API. It generates tailored daily learning roadmaps, features interactive coding prep, and sends scheduled plan summaries using Gmail SMTP integration. The project also includes a lightweight Express-based C# exam-prep tutor.
+An automated C#/.NET study coach and interactive tutor featuring a **Holographic 3D AI Voice Assistant**, multimodal speech recognition, customized daily learning roadmaps, and automated Gmail notifications for study tasks and summaries.
 
-## Requirements
+---
 
-- Node.js 18 or newer
-- A Google AI Studio API key (optional; the app has a built-in tutor fallback)
-- Google OAuth credentials (optional; only needed to send Gmail reminders)
+## ✨ Features
 
-## Run locally
+- **🎙️ Holographic AI Voice Assistant (Live Voice Mode)**:
+  - 3D animated celestial orb with breathing, listening, thinking, and speaking states.
+  - Interactive 7-bar audio waveform visualizer.
+  - Bidirectional voice conversation (speech-to-text with Web Speech API and text-to-speech with natural voices).
+  - Hands-free continuous voice loop mode.
+- **💬 Beautiful AI Chatbot & 4 Personas**:
+  - 🎓 **C# Exam Prep**: Plain-English concept breakdowns and check-for-understanding quizzes.
+  - 🏛️ **.NET Architect**: SOLID design principles, async/await memory optimization, and ASP.NET Core Web APIs.
+  - 🎯 **Quiz Master**: Interactive multiple-choice exam challenges with instant feedback.
+  - 🔍 **Code Doctor**: Instant compiler diagnostics, exception debugging, and LINQ fixes.
+  - Dark-mode syntax-highlighted code blocks with 1-click **Copy Code** buttons.
+  - Audio narration for every assistant response (`🔊 Listen`).
+- **✉️ Automated Gmail Notifications**:
+  - Real-time email reminders when study tasks are due.
+  - Instant task confirmation emails.
+  - Automated morning study plan summaries.
+  - 1-click "Notify Now" and "Send Test Email" controls.
+- **📊 Streamlit Training Dashboard**:
+  - Daily C#/.NET study task generation with Gemini API or built-in curriculum.
+  - Progress tracking stored locally in SQLite (`data/dotnet_training.sqlite3`).
 
-### Streamlit .NET training app
+---
 
-The Streamlit version includes a general-purpose AI chat assistant, voice-question transcription, browser read-aloud controls for assistant replies, daily C#/.NET learning tasks with completion tracking, and optional daily-plan email through Gmail SMTP.
+## 🚀 Getting Started
 
-1. Install Python 3.10 or newer.
-2. Install Python dependencies with `python -m pip install -r requirements.txt`.
-3. Keep your Google AI Studio key in the ignored `.env` file. The Gemini model and endpoint are read from `LLM_MODEL` and `LLM_BASE_URL`.
-4. For Gmail notifications, enable 2-Step Verification on your Google account and create a Google App Password. Add `GMAIL_ADDRESS` and `GMAIL_APP_PASSWORD` to `.env`; do not use your regular Gmail password.
-5. Start the dashboard with `python -m streamlit run streamlit_app.py`.
-6. Open [http://localhost:8501](http://localhost:8501), choose your level, generate a plan, set your email and local send time, and enable the daily email.
+### 1. Requirements
+- **Node.js 18+**
+- **Python 3.10+**
+- A free Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey) (optional; built-in AI tutor fallback is included).
+- Google App Password for Gmail notifications (optional).
 
-The scheduler checks once a minute while the Streamlit app is open and running. It sends at most one plan email per date, and retries a failed send after 15 minutes. Use **Send a test email** to verify Gmail before enabling the daily schedule. Plans and notification settings are stored in `data/dotnet_training.sqlite3`.
+### 2. Run the Web Tutor & AI Voice Assistant (Recommended)
+```bash
+# Install dependencies
+npm install
 
-Run the focused Python tests with `python -m unittest discover -s tests`.
+# Start the web server
+npm start
+```
+Open **[http://localhost:3000](http://localhost:3000)** in Chrome or Edge.
 
-The voice recorder uses Google AI Studio to transcribe recorded questions. The **Listen to answer** button uses the browser's built-in speech voice. If the AI provider rejects a chat request, the app displays the provider's error details (with the API key redacted); check the named model in `LLM_MODEL` if the provider reports a model or request-parameter problem.
+### 3. Run the Streamlit Dashboard
+```bash
+# Install Python dependencies
+python -m pip install -r requirements.txt
 
-### Existing web tutor
+# Start the dashboard
+python -m streamlit run streamlit_app.py
+```
+Open **[http://localhost:8501](http://localhost:8501)**.
 
-1. Copy `.env.example` to `.env`.
-2. Add a **new, private** Google AI Studio API key as `LLM_API_KEY`. The Gemini OpenAI-compatible endpoint and `gemini-3.8-flash` model are preconfigured in `.env.example`. Keep `.env` private.
-3. Install dependencies with `npm install`.
-4. Run `npm run check` to check the JavaScript syntax.
-5. Start the app with `npm start`.
-6. Open [http://localhost:3000](http://localhost:3000).
+---
 
-Study tasks are stored in `data/reminders.json` on this machine. Do not expose this personal, single-user app directly to the public internet.
+## ⚙️ Environment Configuration
 
-## Gmail setup (optional)
+Copy `.env.example` to `.env`:
+```dotenv
+# Gemini API Key from Google AI Studio
+LLM_API_KEY=your-api-key
+LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
+LLM_MODEL=gemini-3.8-flash
 
-For the Streamlit training app, use a Google App Password as described above. For the existing web tutor, Gmail uses the separate OAuth flow below.
-
-1. In Google Cloud Console, create or select a project and enable the Gmail API.
-2. Configure the OAuth consent screen. If the app is in testing mode, add your Google account as a test user.
-3. Create an OAuth client ID of type **Web application**. Add the exact redirect URI shown by the app's **Set up Gmail** dialog as an authorized redirect URI (for the default port, this is `http://localhost:3000/auth/google/callback`).
-4. Put the client ID, secret, and matching redirect URI in `.env`. Never paste credentials into chat or commit `.env`.
-5. Restart the server, click **Connect Gmail**, and grant the requested `gmail.send` permission.
-6. Add an email address to a study task to receive a reminder when it is due.
-7. In **Daily plan email** in the reminders panel, enter the destination address and choose a daily send time. SharpStudy emails a summary of that day's study tasks, including completed tasks, using the server computer's local time zone.
-
-The OAuth refresh token is saved locally in `data/google-token.json`; do not share or commit that file. Disconnect Gmail in the app to revoke the saved token.
-
-## Privacy and behavior
-
-- LLM requests are sent by the server, using the configured endpoint, model, and API key. Do not enter sensitive personal information into chat.
-- If an API key was pasted into chat or otherwise shared, revoke it and create a replacement before configuring `.env`.
-- Without an LLM key, the app provides a small offline C# tutor response instead.
-- Browser notifications require permission and work only while the app is open in a supported browser.
-- Gmail reminders and daily plan emails are checked by the server about once a minute while it is running. The app must remain running at the scheduled time for email delivery. Daily email settings are stored in `data/settings.json`.
-- This is a local, single-user starter app. It has no user accounts or multi-user access controls.
+# Gmail Automation (Google App Password)
+GMAIL_ADDRESS=your-email@gmail.com
+GMAIL_APP_PASSWORD=your-16-char-app-password
+```
+*(You can also connect your Gemini API key directly from the browser UI by clicking **Set up AI** in the top bar).*
